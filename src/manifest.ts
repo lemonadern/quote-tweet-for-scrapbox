@@ -2,19 +2,19 @@ import { ManifestV3Export } from "@crxjs/vite-plugin";
 
 const manifest: ManifestV3Export = {
   manifest_version: 3,
-  name: "Browser Extension TypeScript & React Starter",
-  description: "Browser Extension, TypeScript, React",
+  name: "Quote Tweet for Scrapbox",
+  description: "Quickly quote tweets in Scrapbox-friendly format",
   version: "0.1",
   background: {
     service_worker: "src/background/index.ts",
   },
   content_scripts: [
     {
-      matches: ["http://twitter.com/*"], // 現状は詳細画面のみ
-      js: ["src/content/index.tsx"],
+      matches: ["https://twitter.com/*/status/*"], // 現状は詳細画面のみ
+      js: ["src/content/index.ts"],
     },
   ],
-  host_permissions: ["<all_urls>"],
+  host_permissions: ["https://twitter.com/*/status/*"],
   options_ui: {
     page: "src/options/options.html",
     open_in_tab: true,
