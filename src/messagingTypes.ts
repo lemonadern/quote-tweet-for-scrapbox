@@ -1,6 +1,11 @@
-type sendTextMessage = {
-  kind: "sendText";
-  body: string;
+type SendText = {
+  action: "send_text";
+  data: string;
 };
 
-export type Message = sendTextMessage;
+type RequestUpdateClipboard = {
+  action: "request_update_clipboard";
+  data: string;
+};
+
+export type Message = SendText | RequestUpdateClipboard;
