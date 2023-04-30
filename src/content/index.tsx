@@ -1,14 +1,14 @@
-import React, { ReactElement } from 'react';
-import { createRoot } from 'react-dom/client';
-import { Provider } from 'react-redux';
-import { Store } from '@eduardoac-skimlinks/webext-redux';
+import React, { ReactElement } from "react";
+import { createRoot } from "react-dom/client";
+import { Provider } from "react-redux";
+import { Store } from "@eduardoac-skimlinks/webext-redux";
 
-import { proxyStore as store } from '../app/proxyStore';
+import { proxyStore as store } from "../app/proxyStore";
 
-import Content from './Content';
+import Content from "./Content";
 
 withProxyStore(<Content />, store).then((component) => {
-  const container = document.createElement('my-extension-root');
+  const container = document.createElement("my-extension-root");
   document.body.append(container);
   createRoot(container).render(component);
 });

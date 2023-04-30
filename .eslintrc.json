@@ -25,6 +25,7 @@
     "prettier"
   ],
   "rules": {
+    "quotes": "off",
     "no-unused-expressions": "off",
     "@typescript-eslint/no-unused-expressions": 2,
     "@typescript-eslint/triple-slash-reference": "off",
