@@ -1,6 +1,6 @@
 import React, { ReactElement } from "react";
 
-import { Message } from "../messagingTypes";
+import { MessageRequest, MessageResponse, TweetInfomation } from "../messagingTypes";
 
 const getCurrentTabId = async (): Promise<number | undefined> => {
   const [currentTab] = await chrome.tabs.query({ active: true, lastFocusedWindow: true });
@@ -8,7 +8,7 @@ const getCurrentTabId = async (): Promise<number | undefined> => {
 };
 
 const sendHelloToConent = async () => {
-  const message: Message = {
+  const message: MessageRequest = {
     action: "send_text",
     data: "Hello, this is a message from Popup!",
   };
@@ -23,24 +23,35 @@ const sendHelloToConent = async () => {
   console.info(`Message sent: ${message.action}`);
 };
 
-const requestUpdatingClipboard = async () => {
-  const message: Message = {
-    action: "request_update_clipboard",
-    data: `clipboard updated at ${new Date()}`,
-  };
-
+const getTweetInfomation = async () => {
   const tabId = await getCurrentTabId();
   if (tabId === undefined) {
     console.error("Cannot get id of current tab.");
     throw Error("Cannot get id of current tab.");
   }
 
-  chrome.tabs.sendMessage(tabId, message);
-  console.info(`Message sent: ${message.action}`);
+  const response = await chrome.tabs.sendMessage<MessageRequest, MessageResponse>(tabId, {
+    action: "request_tweet_infomation",
+  });
+
+  return response.data;
 };
 
-const updateClipboard = async () => {
-  await navigator.clipboard.writeText(`Clipboard updated at ${new Date()}`);
+const buildFormattedString = ({ username, link, content, dateTime }: TweetInfomation) => {
+  const prefix = `>[@${username} ${link}]`;
+  const quotedContent = content.split("\n").map((t) => "> " + t);
+
+  return prefix + "\n" + quotedContent;
+};
+
+const writeTextToClipboard = async (text: string) => {
+  await navigator.clipboard.writeText(text);
+};
+
+const writeQuotedTweetToClipboard = async () => {
+  const tweet = await getTweetInfomation();
+  const quoted = buildFormattedString(tweet);
+  writeTextToClipboard(quoted);
 };
 
 export const Popup = (): ReactElement => {
@@ -59,8 +70,7 @@ export const Popup = (): ReactElement => {
       <button
         className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
         onClick={() => {
-          // requestUpdatingClipboard();
-          updateClipboard();
+          writeQuotedTweetToClipboard();
         }}
       >
         copy to clipboard

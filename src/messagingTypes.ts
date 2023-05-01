@@ -3,9 +3,20 @@ type SendText = {
   data: string;
 };
 
-type RequestUpdateClipboard = {
-  action: "request_update_clipboard";
-  data: string;
+type RequestTweetInfomation = {
+  action: "request_tweet_infomation";
 };
 
-export type Message = SendText | RequestUpdateClipboard;
+export type TweetInfomation = {
+  link: string;
+  username: string;
+  content: string;
+  dateTime: string;
+};
+type RespondTweetInfomation = {
+  action: "respond_tweet_infomation";
+  data: TweetInfomation;
+};
+
+export type MessageRequest = SendText | RequestTweetInfomation;
+export type MessageResponse = RespondTweetInfomation;
