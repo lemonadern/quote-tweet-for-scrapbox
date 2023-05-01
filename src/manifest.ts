@@ -11,11 +11,7 @@ const manifest: ManifestV3Export = {
       js: ["src/content/index.ts"],
     },
   ],
-  host_permissions: ["https://twitter.com/*/status/*"],
-  options_ui: {
-    page: "src/options/options.html",
-    open_in_tab: true,
-  },
+  host_permissions: ["https://twitter.com/*"],
   action: {
     default_popup: "src/popup/popup.html",
     default_icon: {
