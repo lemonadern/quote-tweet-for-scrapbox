@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement, useState } from "react";
 
 import { MessageRequest, MessageResponse, TweetInfomation } from "@/messagingTypes";
 
@@ -45,7 +45,11 @@ const buildFormattedString = ({ username, link, content, dateTime }: TweetInfoma
 };
 
 const writeTextToClipboard = async (text: string) => {
-  await navigator.clipboard.writeText(text);
+  try {
+    await navigator.clipboard.writeText(text);
+  } catch (err) {
+    console.error("Failed to write Text to Clipboard.");
+  }
 };
 
 const writeQuotedTweetToClipboard = async () => {
@@ -57,6 +61,7 @@ const writeQuotedTweetToClipboard = async () => {
 export const Popup = (): ReactElement => {
   document.body.style.width = "15rem";
   document.body.style.height = "15rem";
+  const [copied, setCopied] = useState(false);
   return (
     <div className="flex flex-col gap-2 h-screen items-center justify-center">
       <button
@@ -67,10 +72,12 @@ export const Popup = (): ReactElement => {
       >
         hello
       </button>
+      {copied && <p className="text-red-500 font-semibold text-l">Tweet Coiped to Clipboard!</p>}
       <button
         className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
         onClick={() => {
           writeQuotedTweetToClipboard();
+          setCopied(true);
         }}
       >
         copy to clipboard
