@@ -1,4 +1,4 @@
-import { MessageRequest, MessageResponse, TweetInfomation } from "../messagingTypes";
+import { MessageRequest, MessageResponse, TweetInfomation } from "@/messagingTypes";
 
 console.log("ContentScript: Content Script is here.");
 
@@ -49,12 +49,12 @@ chrome.runtime.onMessage.addListener(
           action: "respond_tweet_infomation",
           data: tweetInfo,
         });
-        console.info(`(ContentScript) Message: sent: TweetInfo`);
+        console.info(`(ContentScript) Message sent: TweetInfo`);
         break;
       }
       default: {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const _unreachable: never = message;
+        const _unreachable: never = message; // `never` type for exhausive checking
         break;
       }
     }

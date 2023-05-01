@@ -1,6 +1,6 @@
 import React, { ReactElement } from "react";
 
-import { MessageRequest, MessageResponse, TweetInfomation } from "../messagingTypes";
+import { MessageRequest, MessageResponse, TweetInfomation } from "@/messagingTypes";
 
 const getCurrentTabId = async (): Promise<number | undefined> => {
   const [currentTab] = await chrome.tabs.query({ active: true, lastFocusedWindow: true });
@@ -41,7 +41,7 @@ const buildFormattedString = ({ username, link, content, dateTime }: TweetInfoma
   const prefix = `>[@${username} ${link}]`;
   const quotedContent = content.split("\n").map((t) => "> " + t);
 
-  return prefix + "\n" + quotedContent;
+  return prefix + "\n" + quotedContent.join("\n");
 };
 
 const writeTextToClipboard = async (text: string) => {
