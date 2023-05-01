@@ -1,11 +1,8 @@
 import React, { ReactElement, useState } from "react";
 
 import { MessageRequest, MessageResponse, TweetInfomation } from "@/messagingTypes";
-
-const getCurrentTabId = async (): Promise<number | undefined> => {
-  const [currentTab] = await chrome.tabs.query({ active: true, lastFocusedWindow: true });
-  return currentTab.id;
-};
+import { getCurrentTabId } from "@/shared/chrome";
+import { writeTextToClipboard } from "@/shared/clipboard";
 
 const sendHelloToConent = async () => {
   const message: MessageRequest = {
@@ -42,14 +39,6 @@ const buildFormattedString = ({ username, link, content, dateTime }: TweetInfoma
   const quotedContent = content.split("\n").map((t) => "> " + t);
 
   return prefix + "\n" + quotedContent.join("\n");
-};
-
-const writeTextToClipboard = async (text: string) => {
-  try {
-    await navigator.clipboard.writeText(text);
-  } catch (err) {
-    console.error("Failed to write Text to Clipboard.");
-  }
 };
 
 const writeQuotedTweetToClipboard = async () => {
